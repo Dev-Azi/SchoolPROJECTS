@@ -4,9 +4,17 @@
  */
 package finaloutput;
 
+import LogoFrames.LogoAccounts;
 import java.awt.Color;
 import java.awt.Container;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
 import javax.swing.JOptionPane;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
 
 /**
  *
@@ -17,8 +25,19 @@ public class Accounts extends javax.swing.JFrame {
     /**
      * Creates new form Accounts
      */
+    private static final String filepath2 = "src\\finaloutput\\BankAccount.json";
+    private static final JSONParser Parser2 = new JSONParser();
+    static JSONObject record2 = new JSONObject();
+    static JSONArray users2 = new JSONArray();
+    
     public Accounts() {
         initComponents();
+        LogoAccounts frame = new LogoAccounts();
+        Container contentPane = frame.getContentPane();
+        MainPanel.removeAll();
+        MainPanel.add(contentPane);
+        MainPanel.revalidate();
+        MainPanel.repaint();
     }
 
     /**
@@ -213,7 +232,7 @@ public class Accounts extends javax.swing.JFrame {
         jLabel1.setForeground(new java.awt.Color(255, 255, 255));
         jLabel1.setText("Account Detail");
 
-        jPanel3.setBackground(new java.awt.Color(255, 255, 255));
+        jPanel3.setBackground(new java.awt.Color(204, 204, 255));
 
         SeacrhButton.setBackground(new java.awt.Color(53, 45, 60));
         SeacrhButton.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -268,6 +287,8 @@ public class Accounts extends javax.swing.JFrame {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
+        MainPanel.setBackground(new java.awt.Color(204, 204, 255));
+
         javax.swing.GroupLayout MainPanelLayout = new javax.swing.GroupLayout(MainPanel);
         MainPanel.setLayout(MainPanelLayout);
         MainPanelLayout.setHorizontalGroup(
@@ -276,7 +297,7 @@ public class Accounts extends javax.swing.JFrame {
         );
         MainPanelLayout.setVerticalGroup(
             MainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 301, Short.MAX_VALUE)
+            .addGap(0, 299, Short.MAX_VALUE)
         );
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
@@ -297,13 +318,12 @@ public class Accounts extends javax.swing.JFrame {
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel1)
                     .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGap(12, 12, 12)
                 .addComponent(MainPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addContainerGap())
         );
@@ -324,10 +344,11 @@ public class Accounts extends javax.swing.JFrame {
 
     private void PersonalInformationMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_PersonalInformationMouseClicked
         // TODO add your handling code here:
-         if (UserID.getText().isEmpty()) {
+        String searchedID = UserID.getText();
+         if (searchedID.isEmpty()) {
             JOptionPane.showMessageDialog(this, "Please enter an Account Number first.", "Error", JOptionPane.ERROR_MESSAGE);
         } else {
-            PersonalInformation frame = new PersonalInformation(UserID.getText());
+            PersonalInformation frame = new PersonalInformation(searchedID);
             Container contentPane = frame.getContentPane();
             MainPanel.removeAll();
             MainPanel.add(contentPane);
@@ -355,7 +376,7 @@ public class Accounts extends javax.swing.JFrame {
          if (UserID.getText().isEmpty()) {
             JOptionPane.showMessageDialog(this, "Please enter an Account Number first.", "Error", JOptionPane.ERROR_MESSAGE);
         } else {
-            TransactionHistory frame = new TransactionHistory();
+            TransactionHistory frame = new TransactionHistory(UserID.getText());
             Container contentPane = frame.getContentPane();
             MainPanel.removeAll();
             MainPanel.add(contentPane);
@@ -396,12 +417,7 @@ public class Accounts extends javax.swing.JFrame {
 
     private void SeacrhButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_SeacrhButtonMouseClicked
         // TODO add your handling code here:
-        PersonalInformation frame = new PersonalInformation(UserID.getText());
-        Container contentPane = frame.getContentPane();
-        MainPanel.removeAll();
-        MainPanel.add(contentPane);
-        MainPanel.revalidate();
-        MainPanel.repaint();
+        searcher();
     }//GEN-LAST:event_SeacrhButtonMouseClicked
 
     private void SeacrhButtonMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_SeacrhButtonMouseEntered
@@ -447,6 +463,46 @@ public class Accounts extends javax.swing.JFrame {
                 new Accounts().setVisible(true);
             }
         });
+    }
+    public void searcher() {
+        String searchedID = UserID.getText();
+        FileReader reader;
+        boolean found = false;
+
+        try {
+            reader = new FileReader(filepath2);
+            if (reader.ready()) {
+                record2 = (JSONObject) Parser2.parse(reader);
+                users2 = (JSONArray) record2.get("Bank Account List");
+
+                for (int i = 0; i < users2.size(); i++) {
+                    JSONObject user = (JSONObject) users2.get(i);
+                    String matchedID = (String) user.get("Account ID");
+
+                    if (searchedID.equals(matchedID)) {
+                        PersonalInformation frame = new PersonalInformation(UserID.getText());
+                        Container contentPane = frame.getContentPane();
+                        MainPanel.removeAll();
+                        MainPanel.add(contentPane);
+                        MainPanel.revalidate();
+                        MainPanel.repaint();
+                        found = true;
+                        break; 
+                    }
+                }
+
+                if (!found) {
+                    JOptionPane.showMessageDialog(this, "ERROR! BANK NUMBER NOT FOUND!", "Error", JOptionPane.ERROR_MESSAGE);
+                }
+            }
+            reader.close();
+        } catch (FileNotFoundException ex) {
+            System.out.println("File not found: " + ex.getMessage());
+        } catch (IOException ex) {
+            System.out.println("Error reading file: " + ex.getMessage());
+        } catch (ParseException ex) {
+            System.out.println("Error parsing file: " + ex.getMessage());
+        }
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

@@ -4,8 +4,12 @@
  */
 package finaloutput;
 
+import LogoFrames.LogoWelcome;
 import java.awt.Color;
 import java.awt.Container;
+import java.awt.Image;
+import javax.swing.ImageIcon;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -16,11 +20,21 @@ public class EmployeeDashboard extends javax.swing.JFrame {
     /**
      * Creates new form EmployeeDashboard
      */
+    private int initialX, initialY;
+
     public EmployeeDashboard() {
         setUndecorated(true);
         initComponents();
         setResizable(false);
         setLocationRelativeTo(null);
+
+        LogoWelcome frame = new LogoWelcome();
+        Container contentPane = frame.getContentPane();
+        MainPanel.removeAll();
+        MainPanel.add(contentPane);
+        MainPanel.revalidate();
+        MainPanel.repaint();
+        SignoutLOGO();
     }
 
     /**
@@ -48,7 +62,7 @@ public class EmployeeDashboard extends javax.swing.JFrame {
         jLabel5 = new javax.swing.JLabel();
         Inquire = new javax.swing.JPanel();
         jLabel6 = new javax.swing.JLabel();
-        FundTransfer = new javax.swing.JPanel();
+        CloseAccount = new javax.swing.JPanel();
         jLabel8 = new javax.swing.JLabel();
         Generate = new javax.swing.JPanel();
         jLabel9 = new javax.swing.JLabel();
@@ -58,6 +72,16 @@ public class EmployeeDashboard extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         jPanel1.setBackground(new java.awt.Color(204, 204, 255));
+        jPanel1.addMouseMotionListener(new java.awt.event.MouseMotionAdapter() {
+            public void mouseDragged(java.awt.event.MouseEvent evt) {
+                jPanel1MouseDragged(evt);
+            }
+        });
+        jPanel1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                jPanel1MousePressed(evt);
+            }
+        });
 
         jPanel4.setBackground(new java.awt.Color(24, 21, 27));
 
@@ -65,8 +89,6 @@ public class EmployeeDashboard extends javax.swing.JFrame {
 
         BackButton.setForeground(new java.awt.Color(255, 255, 255));
         BackButton.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        BackButton.setText("Sign Out");
-        BackButton.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 0, 0), 1, true));
         BackButton.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 BackButtonMouseClicked(evt);
@@ -77,14 +99,14 @@ public class EmployeeDashboard extends javax.swing.JFrame {
         jPanel3.setLayout(jPanel3Layout);
         jPanel3Layout.setHorizontalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel3Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(BackButton, javax.swing.GroupLayout.PREFERRED_SIZE, 69, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(BackButton, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel3Layout.createSequentialGroup()
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(BackButton, javax.swing.GroupLayout.DEFAULT_SIZE, 45, Short.MAX_VALUE)
                 .addContainerGap())
@@ -103,6 +125,8 @@ public class EmployeeDashboard extends javax.swing.JFrame {
             .addGap(0, 0, Short.MAX_VALUE)
         );
 
+        MainPanel.setBackground(new java.awt.Color(204, 204, 255));
+
         javax.swing.GroupLayout MainPanelLayout = new javax.swing.GroupLayout(MainPanel);
         MainPanel.setLayout(MainPanelLayout);
         MainPanelLayout.setHorizontalGroup(
@@ -111,7 +135,7 @@ public class EmployeeDashboard extends javax.swing.JFrame {
         );
         MainPanelLayout.setVerticalGroup(
             MainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 419, Short.MAX_VALUE)
+            .addGap(0, 0, Short.MAX_VALUE)
         );
 
         jLabel1.setForeground(new java.awt.Color(255, 255, 255));
@@ -223,31 +247,34 @@ public class EmployeeDashboard extends javax.swing.JFrame {
             .addComponent(jLabel6, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 40, Short.MAX_VALUE)
         );
 
-        FundTransfer.setBackground(new java.awt.Color(24, 21, 27));
-        FundTransfer.addMouseListener(new java.awt.event.MouseAdapter() {
+        CloseAccount.setBackground(new java.awt.Color(24, 21, 27));
+        CloseAccount.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                CloseAccountMouseClicked(evt);
+            }
             public void mouseEntered(java.awt.event.MouseEvent evt) {
-                FundTransferMouseEntered(evt);
+                CloseAccountMouseEntered(evt);
             }
             public void mouseExited(java.awt.event.MouseEvent evt) {
-                FundTransferMouseExited(evt);
+                CloseAccountMouseExited(evt);
             }
         });
 
         jLabel8.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         jLabel8.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel8.setText("Coming Soon");
+        jLabel8.setText("Close Account");
 
-        javax.swing.GroupLayout FundTransferLayout = new javax.swing.GroupLayout(FundTransfer);
-        FundTransfer.setLayout(FundTransferLayout);
-        FundTransferLayout.setHorizontalGroup(
-            FundTransferLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(FundTransferLayout.createSequentialGroup()
+        javax.swing.GroupLayout CloseAccountLayout = new javax.swing.GroupLayout(CloseAccount);
+        CloseAccount.setLayout(CloseAccountLayout);
+        CloseAccountLayout.setHorizontalGroup(
+            CloseAccountLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(CloseAccountLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jLabel8)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
-        FundTransferLayout.setVerticalGroup(
-            FundTransferLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+        CloseAccountLayout.setVerticalGroup(
+            CloseAccountLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jLabel8, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 40, Short.MAX_VALUE)
         );
 
@@ -319,7 +346,7 @@ public class EmployeeDashboard extends javax.swing.JFrame {
                                     .addComponent(AccountSummary, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                     .addComponent(Accounts, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                     .addComponent(Inquire, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(FundTransfer, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(CloseAccount, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                     .addComponent(Generate, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                     .addGroup(jPanel4Layout.createSequentialGroup()
                                         .addGap(8, 8, 8)
@@ -360,7 +387,7 @@ public class EmployeeDashboard extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(Inquire, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(FundTransfer, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(CloseAccount, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
                         .addComponent(jLabel7)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -368,7 +395,7 @@ public class EmployeeDashboard extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jPanel10, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(0, 3, Short.MAX_VALUE))
-                    .addComponent(MainPanel, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(MainPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
 
@@ -406,53 +433,53 @@ public class EmployeeDashboard extends javax.swing.JFrame {
     private void AccountSummaryMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_AccountSummaryMouseEntered
         // TODO add your handling code here:
         // moused pressed AccountSummary.setBackground(new Color(128,106,146)); 
-        AccountSummary.setBackground(new Color(53,45,60));
+        AccountSummary.setBackground(new Color(53, 45, 60));
     }//GEN-LAST:event_AccountSummaryMouseEntered
 
     private void AccountsMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_AccountsMouseEntered
         // TODO add your handling code here:
-        Accounts.setBackground(new Color(53,45,60));
+        Accounts.setBackground(new Color(53, 45, 60));
     }//GEN-LAST:event_AccountsMouseEntered
 
     private void InquireMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_InquireMouseEntered
         // TODO add your handling code here:
-        Inquire.setBackground(new Color(53,45,60));
+        Inquire.setBackground(new Color(53, 45, 60));
     }//GEN-LAST:event_InquireMouseEntered
 
-    private void FundTransferMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_FundTransferMouseEntered
+    private void CloseAccountMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_CloseAccountMouseEntered
         // TODO add your handling code here:\
-        FundTransfer.setBackground(new Color(53,45,60));
-    }//GEN-LAST:event_FundTransferMouseEntered
+        CloseAccount.setBackground(new Color(53, 45, 60));
+    }//GEN-LAST:event_CloseAccountMouseEntered
 
     private void GenerateMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_GenerateMouseEntered
         // TODO add your handling code here:
-        Generate.setBackground(new Color(53,45,60));
+        Generate.setBackground(new Color(53, 45, 60));
     }//GEN-LAST:event_GenerateMouseEntered
 
     private void AccountSummaryMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_AccountSummaryMouseExited
         // TODO add your handling code here:
-        AccountSummary.setBackground(new Color(24,21,27));
+        AccountSummary.setBackground(new Color(24, 21, 27));
     }//GEN-LAST:event_AccountSummaryMouseExited
 
     private void AccountsMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_AccountsMouseExited
         // TODO add your handling code here:
-        Accounts.setBackground(new Color(24,21,27));
+        Accounts.setBackground(new Color(24, 21, 27));
     }//GEN-LAST:event_AccountsMouseExited
 
     private void InquireMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_InquireMouseExited
         // TODO add your handling code here:
-        Inquire.setBackground(new Color(24,21,27));
+        Inquire.setBackground(new Color(24, 21, 27));
     }//GEN-LAST:event_InquireMouseExited
 
     private void GenerateMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_GenerateMouseExited
         // TODO add your handling code here:
-        Generate.setBackground(new Color(24,21,27));
+        Generate.setBackground(new Color(24, 21, 27));
     }//GEN-LAST:event_GenerateMouseExited
 
-    private void FundTransferMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_FundTransferMouseExited
+    private void CloseAccountMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_CloseAccountMouseExited
         // TODO add your handling code here:
-        FundTransfer.setBackground(new Color(24,21,27));
-    }//GEN-LAST:event_FundTransferMouseExited
+        CloseAccount.setBackground(new Color(24, 21, 27));
+    }//GEN-LAST:event_CloseAccountMouseExited
 
     private void AccountSummaryMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_AccountSummaryMouseClicked
         // TODO add your handling code here:
@@ -486,9 +513,12 @@ public class EmployeeDashboard extends javax.swing.JFrame {
 
     private void BackButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_BackButtonMouseClicked
         // TODO add your handling code here:
-        Main frame = new Main();
-        frame.setVisible(true);
-        dispose();
+        int choice = JOptionPane.showConfirmDialog(null, "Are you sure you want to Log out?", "Confirmation", JOptionPane.YES_NO_OPTION);
+        if (choice == JOptionPane.YES_OPTION) {
+            Main frame = new Main();
+            frame.setVisible(true);
+            dispose();
+        }
     }//GEN-LAST:event_BackButtonMouseClicked
 
     private void InquireMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_InquireMouseClicked
@@ -500,6 +530,24 @@ public class EmployeeDashboard extends javax.swing.JFrame {
         MainPanel.revalidate();
         MainPanel.repaint();
     }//GEN-LAST:event_InquireMouseClicked
+
+    private void CloseAccountMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_CloseAccountMouseClicked
+        // TODO add your handling code here:
+
+    }//GEN-LAST:event_CloseAccountMouseClicked
+
+    private void jPanel1MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel1MousePressed
+        // TODO add your handling code here:
+        initialX = evt.getX();
+        initialY = evt.getY();
+    }//GEN-LAST:event_jPanel1MousePressed
+
+    private void jPanel1MouseDragged(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel1MouseDragged
+        // TODO add your handling code here:
+        int newX = getLocation().x + evt.getX() - initialX;
+        int newY = getLocation().y + evt.getY() - initialY;
+        setLocation(newX, newY);
+    }//GEN-LAST:event_jPanel1MouseDragged
 
     /**
      * @param args the command line arguments
@@ -535,12 +583,17 @@ public class EmployeeDashboard extends javax.swing.JFrame {
             }
         });
     }
-
+    public final void SignoutLOGO() {
+        ImageIcon icon = new ImageIcon("src\\icons\\SignoutLogo2.png");
+        Image scaledImage = icon.getImage().getScaledInstance(BackButton.getWidth(), BackButton.getHeight(), Image.SCALE_SMOOTH);
+        ImageIcon scaledIcon = new ImageIcon(scaledImage);
+        BackButton.setIcon(scaledIcon);
+    }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel AccountSummary;
     private javax.swing.JPanel Accounts;
     private javax.swing.JLabel BackButton;
-    private javax.swing.JPanel FundTransfer;
+    private javax.swing.JPanel CloseAccount;
     private javax.swing.JPanel Generate;
     private javax.swing.JPanel Inquire;
     private javax.swing.JPanel MainPanel;

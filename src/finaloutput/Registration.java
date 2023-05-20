@@ -1,10 +1,12 @@
-/*
+    /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
 package finaloutput;
 
+import LogoFrames.LogoRegistration;
 import java.awt.Color;
+import java.awt.Container;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.FileNotFoundException;
@@ -37,8 +39,8 @@ public class Registration extends javax.swing.JFrame {
     static JSONArray users = new JSONArray();
     static JSONObject account = new JSONObject();
     
-    private static final int ANIMATION_DELAY = 10;
-    private static final Color ORIGINAL_COLOR = new Color(24,21,27);
+    private static final int ANIMATION_DELAY = 20;
+    private static final Color ORIGINAL_COLOR = new Color(204, 204, 255);
     
     public Registration() {
         setUndecorated(true);
@@ -56,6 +58,12 @@ public class Registration extends javax.swing.JFrame {
             PassTF.setForeground(Color.GRAY);
         }
         applyColorPulseAnimation(jPanel3);
+        LogoRegistration frame = new LogoRegistration();
+        Container contentPane = frame.getContentPane();
+        jPanel10.removeAll();
+        jPanel10.add(contentPane);
+        jPanel10.revalidate();
+        jPanel10.repaint();
     }
 
     /**
@@ -69,8 +77,9 @@ public class Registration extends javax.swing.JFrame {
 
         jPanel1 = new javax.swing.JPanel();
         jPanel2 = new javax.swing.JPanel();
+        BackButton = new javax.swing.JLabel();
         jPanel3 = new javax.swing.JPanel();
-        jLabel1 = new javax.swing.JLabel();
+        jPanel10 = new javax.swing.JPanel();
         jPanel9 = new javax.swing.JPanel();
         jPanel7 = new javax.swing.JPanel();
         UsernameTF = new javax.swing.JTextField();
@@ -93,37 +102,57 @@ public class Registration extends javax.swing.JFrame {
 
         jPanel2.setBackground(new java.awt.Color(53, 45, 60));
 
+        BackButton.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        BackButton.setForeground(new java.awt.Color(255, 255, 255));
+        BackButton.setText("GO BACK");
+        BackButton.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                BackButtonMouseClicked(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(BackButton)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 25, Short.MAX_VALUE)
+            .addComponent(BackButton, javax.swing.GroupLayout.DEFAULT_SIZE, 25, Short.MAX_VALUE)
         );
 
         jPanel3.setBackground(new java.awt.Color(24, 21, 27));
 
-        jLabel1.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel1.setText("LOGO/DESIGN");
+        javax.swing.GroupLayout jPanel10Layout = new javax.swing.GroupLayout(jPanel10);
+        jPanel10.setLayout(jPanel10Layout);
+        jPanel10Layout.setHorizontalGroup(
+            jPanel10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 468, Short.MAX_VALUE)
+        );
+        jPanel10Layout.setVerticalGroup(
+            jPanel10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 0, Short.MAX_VALUE)
+        );
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
         jPanel3Layout.setHorizontalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel3Layout.createSequentialGroup()
-                .addGap(186, 186, 186)
-                .addComponent(jLabel1)
-                .addContainerGap(217, Short.MAX_VALUE))
+                .addContainerGap()
+                .addComponent(jPanel10, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel3Layout.createSequentialGroup()
-                .addGap(200, 200, 200)
-                .addComponent(jLabel1)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap()
+                .addComponent(jPanel10, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
         );
 
         jPanel9.setBackground(new java.awt.Color(57, 49, 64));
@@ -492,9 +521,9 @@ public class Registration extends javax.swing.JFrame {
 
             for (Object userObj : users) {
                 JSONObject user = (JSONObject) userObj;
-                String existingUsername = (String) user.get("Username");
-                String existingFirstName = (String) user.get("First Name");
-                String existingLastName = (String) user.get("Last Name");
+                String existingUsername = (String) user.get("APP: Username");
+                String existingFirstName = (String) user.get("APP: First Name");
+                String existingLastName = (String) user.get("APP: Last Name");
 
                 if (existingUsername.equals(Username)) {
                     UsernameExists = true;
@@ -527,17 +556,26 @@ public class Registration extends javax.swing.JFrame {
             // Check for existing userNumber
             for (Object userObj : users) {
                 JSONObject user = (JSONObject) userObj;
-                int existingUserNumber = Integer.parseInt((String) user.get("Number"));
+                int existingUserNumber = Integer.parseInt((String) user.get("APP: Number"));
 
                 if (existingUserNumber >= userNumber) {
                     userNumber = existingUserNumber + 1;
                 }
             }
-            account.put("First Name", FName);
-            account.put("Last Name", LName);
-            account.put("Username", Username);
-            account.put("Password", Pass);
-            account.put("Number", String.valueOf(userNumber));
+            account.put("APP: First Name", FName);
+            account.put("APP: Last Name", LName);
+            account.put("APP: Username", Username);
+            account.put("APP: Password", Pass);
+            account.put("APP: Number", String.valueOf(userNumber));
+            account.put("BANK: First Name", "");
+            account.put("BANK: Last Name", "");
+            account.put("BANK: Middle Name", "");
+            account.put("BANK: Account ID", "");
+            account.put("BANK: Contact Number", "");
+            account.put("BANK: Email", "");
+            account.put("BANK: Balance", "");
+            account.put("BANK: Acount Type", "");
+            
             users.add(account);
             record.put("Account List", users);
             save();
@@ -550,6 +588,13 @@ public class Registration extends javax.swing.JFrame {
             Logger.getLogger(Registration.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_CreateAccButtonMouseClicked
+
+    private void BackButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_BackButtonMouseClicked
+        // TODO add your handling code here:
+        Main frame = new Main();
+        frame.setVisible(true);
+        dispose();
+    }//GEN-LAST:event_BackButtonMouseClicked
 
     /**
      * @param args the command line arguments
@@ -617,13 +662,13 @@ public class Registration extends javax.swing.JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 if (increasing) {
-                    hue += 0.005f; // Increment the hue value
+                    hue += 0.01f; // Increment the hue value
                     if (hue >= 1.0f) {
                         hue = 1.0f; // Clamp the hue value to 1.0
                         increasing = false; // Change direction to start decreasing hue
                     }
                 } else {
-                    hue -= 0.005f; // Decrement the hue value
+                    hue -= 0.01f; // Decrement the hue value
                     if (hue <= hsbValues[0]) {
                         hue = hsbValues[0]; // Reset hue value to original hue
                         increasing = true; // Change direction to start increasing hue
@@ -639,6 +684,7 @@ public class Registration extends javax.swing.JFrame {
         timer.start();
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JLabel BackButton;
     private javax.swing.JPasswordField ConfirmPassTF;
     private javax.swing.JPanel CreateAccButton;
     private javax.swing.JLabel ErrorMessageLabel;
@@ -646,9 +692,9 @@ public class Registration extends javax.swing.JFrame {
     private javax.swing.JTextField LnameTF;
     private javax.swing.JPasswordField PassTF;
     private javax.swing.JTextField UsernameTF;
-    private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel jPanel10;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;

@@ -5,6 +5,17 @@
 package finaloutput;
 
 import java.awt.Color;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import javax.swing.JOptionPane;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
 
 /**
  *
@@ -15,8 +26,28 @@ public class CashWithdrawal extends javax.swing.JFrame {
     /**
      * Creates new form CashWithdrawal
      */
+    private static final String filepath3 = "src\\finaloutput\\History.json";
+    private static JSONParser Parser3 = new JSONParser();
+    static JSONObject record3 = new JSONObject();
+    static JSONArray history = new JSONArray();
+    static JSONObject transact = new JSONObject();
+    
+    private static final String filepath2 = "src\\finaloutput\\BankAccount.json";
+    private static final JSONParser Parser2 = new JSONParser();
+    static JSONObject record2 = new JSONObject();
+    static JSONArray users2 = new JSONArray();
+    
+    private static final String filepath = "src\\finaloutput\\AppAccount.json";
+    private static final JSONParser Parser = new JSONParser();
+    static JSONObject record = new JSONObject();
+    static JSONArray users = new JSONArray();
+    
     public CashWithdrawal() {
         initComponents();
+    }
+    public CashWithdrawal(String textValue) {
+        this();
+        SearchID.setText(textValue);
     }
 
     /**
@@ -28,10 +59,11 @@ public class CashWithdrawal extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        SearchID = new javax.swing.JLabel();
         jPanel1 = new javax.swing.JPanel();
         jPanel2 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
-        TextHolder = new javax.swing.JTextField();
+        AmountHolder = new javax.swing.JTextField();
         One = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
         Four = new javax.swing.JPanel();
@@ -63,22 +95,26 @@ public class CashWithdrawal extends javax.swing.JFrame {
         Accept = new javax.swing.JPanel();
         jLabel14 = new javax.swing.JLabel();
 
+        SearchID.setForeground(new java.awt.Color(73, 61, 85));
+        SearchID.setText("jLabel27");
+
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         jPanel1.setBackground(new java.awt.Color(73, 61, 85));
 
         jPanel2.setBackground(new java.awt.Color(32, 27, 38));
+        jPanel2.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.LOWERED));
 
         jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 48)); // NOI18N
         jLabel1.setForeground(new java.awt.Color(153, 153, 153));
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel1.setText("$");
 
-        TextHolder.setBackground(new java.awt.Color(32, 27, 38));
-        TextHolder.setFont(new java.awt.Font("Segoe UI", 1, 48)); // NOI18N
-        TextHolder.setForeground(new java.awt.Color(0, 204, 51));
-        TextHolder.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
-        TextHolder.setBorder(null);
+        AmountHolder.setBackground(new java.awt.Color(32, 27, 38));
+        AmountHolder.setFont(new java.awt.Font("Segoe UI", 1, 48)); // NOI18N
+        AmountHolder.setForeground(new java.awt.Color(0, 204, 51));
+        AmountHolder.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
+        AmountHolder.setBorder(null);
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -88,7 +124,7 @@ public class CashWithdrawal extends javax.swing.JFrame {
                 .addContainerGap()
                 .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addComponent(TextHolder, javax.swing.GroupLayout.DEFAULT_SIZE, 307, Short.MAX_VALUE)
+                .addComponent(AmountHolder, javax.swing.GroupLayout.DEFAULT_SIZE, 301, Short.MAX_VALUE)
                 .addContainerGap())
         );
         jPanel2Layout.setVerticalGroup(
@@ -96,8 +132,8 @@ public class CashWithdrawal extends javax.swing.JFrame {
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, 88, Short.MAX_VALUE)
-                    .addComponent(TextHolder))
+                    .addComponent(jLabel1)
+                    .addComponent(AmountHolder))
                 .addContainerGap())
         );
 
@@ -133,7 +169,7 @@ public class CashWithdrawal extends javax.swing.JFrame {
             OneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(OneLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, 37, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -169,7 +205,7 @@ public class CashWithdrawal extends javax.swing.JFrame {
             FourLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(FourLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jLabel5, javax.swing.GroupLayout.DEFAULT_SIZE, 37, Short.MAX_VALUE)
+                .addComponent(jLabel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -240,7 +276,7 @@ public class CashWithdrawal extends javax.swing.JFrame {
             SixLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(SixLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jLabel7, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jLabel7, javax.swing.GroupLayout.DEFAULT_SIZE, 37, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -277,7 +313,7 @@ public class CashWithdrawal extends javax.swing.JFrame {
             .addGroup(CancelLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jLabel16)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(7, Short.MAX_VALUE))
         );
 
         Two.setBackground(new java.awt.Color(81, 67, 95));
@@ -312,7 +348,7 @@ public class CashWithdrawal extends javax.swing.JFrame {
             TwoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(TwoLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, 37, Short.MAX_VALUE)
+                .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -384,7 +420,7 @@ public class CashWithdrawal extends javax.swing.JFrame {
             SevenLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(SevenLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jLabel8, javax.swing.GroupLayout.DEFAULT_SIZE, 37, Short.MAX_VALUE)
+                .addComponent(jLabel8, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -456,7 +492,7 @@ public class CashWithdrawal extends javax.swing.JFrame {
             NineLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(NineLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jLabel10, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jLabel10, javax.swing.GroupLayout.DEFAULT_SIZE, 37, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -492,7 +528,7 @@ public class CashWithdrawal extends javax.swing.JFrame {
             DecimalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(DecimalLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jLabel11, javax.swing.GroupLayout.DEFAULT_SIZE, 37, Short.MAX_VALUE)
+                .addComponent(jLabel11, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -564,7 +600,7 @@ public class CashWithdrawal extends javax.swing.JFrame {
             ClearLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(ClearLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jLabel15, javax.swing.GroupLayout.DEFAULT_SIZE, 17, Short.MAX_VALUE)
+                .addComponent(jLabel15, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -600,7 +636,7 @@ public class CashWithdrawal extends javax.swing.JFrame {
             DoubleZeroLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(DoubleZeroLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jLabel13, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jLabel13, javax.swing.GroupLayout.DEFAULT_SIZE, 37, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -644,16 +680,16 @@ public class CashWithdrawal extends javax.swing.JFrame {
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addContainerGap(47, Short.MAX_VALUE)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(49, 49, 49)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(Seven, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(One, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(Four, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(Decimal, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(Cancel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addComponent(Cancel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(18, 18, 18)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(Clear, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -668,40 +704,40 @@ public class CashWithdrawal extends javax.swing.JFrame {
                             .addComponent(Three, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(Six, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(Nine, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addComponent(jPanel2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(46, 46, 46))
+                    .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(50, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addContainerGap()
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                .addGap(17, 17, 17)
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGap(12, 12, 12)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                     .addComponent(Two, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(Three, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(One, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(One, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(12, 12, 12)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(Four, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(Five, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(Six, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(Six, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(Seven, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(Eight, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(Nine, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(Nine, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(Decimal, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(Zero, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(DoubleZero, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(DoubleZero, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(Clear, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(Accept, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(Cancel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(Cancel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(19, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -718,252 +754,332 @@ public class CashWithdrawal extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void OneMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_OneMousePressed
+    private void AcceptMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_AcceptMouseReleased
         // TODO add your handling code here:
-        One.setBackground(new Color(57,47,66));
-    }//GEN-LAST:event_OneMousePressed
-
-    private void TwoMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_TwoMousePressed
-        // TODO add your handling code here:
-        Two.setBackground(new Color(57,47,66));
-    }//GEN-LAST:event_TwoMousePressed
-
-    private void ThreeMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_ThreeMousePressed
-        // TODO add your handling code here:
-        Three.setBackground(new Color(57,47,66));
-    }//GEN-LAST:event_ThreeMousePressed
-
-    private void FourMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_FourMousePressed
-        // TODO add your handling code here:
-        Four.setBackground(new Color(57,47,66));
-    }//GEN-LAST:event_FourMousePressed
-
-    private void FiveMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_FiveMousePressed
-        // TODO add your handling code here:
-        Five.setBackground(new Color(57,47,66));
-    }//GEN-LAST:event_FiveMousePressed
-
-    private void SixMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_SixMousePressed
-        // TODO add your handling code here:
-        Six.setBackground(new Color(57,47,66));
-    }//GEN-LAST:event_SixMousePressed
-
-    private void SevenMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_SevenMousePressed
-        // TODO add your handling code here:
-        Seven.setBackground(new Color(57,47,66));
-    }//GEN-LAST:event_SevenMousePressed
-
-    private void EightMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_EightMousePressed
-        // TODO add your handling code here:
-        Eight.setBackground(new Color(57,47,66));
-    }//GEN-LAST:event_EightMousePressed
-
-    private void NineMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_NineMousePressed
-        // TODO add your handling code here:
-        Nine.setBackground(new Color(57,47,66));
-    }//GEN-LAST:event_NineMousePressed
-
-    private void DecimalMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_DecimalMousePressed
-        // TODO add your handling code here:
-        Decimal.setBackground(new Color(57,47,66));
-    }//GEN-LAST:event_DecimalMousePressed
-
-    private void ZeroMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_ZeroMousePressed
-        // TODO add your handling code here:
-        Zero.setBackground(new Color(57,47,66));
-    }//GEN-LAST:event_ZeroMousePressed
-
-    private void DoubleZeroMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_DoubleZeroMousePressed
-        // TODO add your handling code here:
-        DoubleZero.setBackground(new Color(57,47,66));
-    }//GEN-LAST:event_DoubleZeroMousePressed
-
-    private void CancelMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_CancelMousePressed
-        // TODO add your handling code here:
-        Cancel.setBackground(Color.DARK_GRAY);
-    }//GEN-LAST:event_CancelMousePressed
-
-    private void ClearMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_ClearMousePressed
-        // TODO add your handling code here:
-        Clear.setBackground(Color.DARK_GRAY);
-    }//GEN-LAST:event_ClearMousePressed
+        Accept.setBackground(new Color(0,204,51));
+    }//GEN-LAST:event_AcceptMouseReleased
 
     private void AcceptMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_AcceptMousePressed
         // TODO add your handling code here:
         Accept.setBackground(Color.DARK_GRAY);
     }//GEN-LAST:event_AcceptMousePressed
 
-    private void OneMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_OneMouseReleased
+    private void AcceptMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_AcceptMouseClicked
         // TODO add your handling code here:
-        One.setBackground(new Color(81,67,95));
-    }//GEN-LAST:event_OneMouseReleased
+        String accountID = SearchID.getText();
+        String amountSTR = AmountHolder.getText();
 
-    private void TwoMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_TwoMouseReleased
-        // TODO add your handling code here:
-        Two.setBackground(new Color(81,67,95));
-    }//GEN-LAST:event_TwoMouseReleased
+        if (amountSTR.isEmpty()) {
+            JOptionPane.showMessageDialog(null, "Please Enter a valid amount.");
+            return;
+        }
+        boolean isAccountIDFound = false;
+        float amountNUM;
 
-    private void ThreeMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_ThreeMouseReleased
-        // TODO add your handling code here:
-        Three.setBackground(new Color(81,67,95));
-    }//GEN-LAST:event_ThreeMouseReleased
+        try {
+            amountNUM = Float.parseFloat(amountSTR);
+        } catch (NumberFormatException ex) {
+            System.out.println("Invalid amount format");
+            return;
+        }
 
-    private void FourMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_FourMouseReleased
-        // TODO add your handling code here:
-        Four.setBackground(new Color(81,67,95));
-    }//GEN-LAST:event_FourMouseReleased
+        FileReader reader, reader2;
+        try {
 
-    private void FiveMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_FiveMouseReleased
-        // TODO add your handling code here:
-        Five.setBackground(new Color(81,67,95));
-    }//GEN-LAST:event_FiveMouseReleased
+            reader = new FileReader(filepath2);
+            if (reader.ready()) {
+                record2 = (JSONObject) Parser2.parse(reader);
+                users2 = (JSONArray) record2.get("Bank Account List");
 
-    private void SixMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_SixMouseReleased
-        // TODO add your handling code here:
-        Six.setBackground(new Color(81,67,95));
-    }//GEN-LAST:event_SixMouseReleased
+                for (int i = 0; i < users2.size(); i++) {
+                    JSONObject user = (JSONObject) users2.get(i);
+                    String idSTR = (String) user.get("Account ID");
+                    String balanceSTR = (String) user.get("Balance");
+                    float balanceNUM = Float.parseFloat(balanceSTR);
 
-    private void SevenMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_SevenMouseReleased
-        // TODO add your handling code here:
-        Seven.setBackground(new Color(81,67,95));
-    }//GEN-LAST:event_SevenMouseReleased
+                    if (idSTR.equals(accountID)) {
+                        isAccountIDFound = true;
+                        if (balanceNUM >= amountNUM) {
+                            float totalNUM = balanceNUM - amountNUM;
+                            String totalSTR = Float.toString(totalNUM);
 
-    private void EightMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_EightMouseReleased
-        // TODO add your handling code here:
-        Eight.setBackground(new Color(81,67,95));
-    }//GEN-LAST:event_EightMouseReleased
+                            int choice = JOptionPane.showConfirmDialog(null, "Are you sure you want to proceed with the transcation?", "Confirmation", JOptionPane.YES_NO_OPTION);
+                            if (choice == JOptionPane.YES_OPTION) {
+                                user.put("Balance", totalSTR);
+                                save();
 
-    private void NineMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_NineMouseReleased
-        // TODO add your handling code here:
-        Nine.setBackground(new Color(81,67,95));
-    }//GEN-LAST:event_NineMouseReleased
+                                // HISTORY
+                                readTransactionHistory();
+                                transact.put("Account ID", accountID);
+                                transact.put("Transaction Type", "Withdraw");
+                                transact.put("Transaction Amount", amountSTR);
+                                transact.put("Updated Balance", totalSTR);
+                                LocalDateTime dateTime = LocalDateTime.now();
+                                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+                                transact.put("Transaction Date", dateTime.format(formatter));
+                                history.add(transact);
+                                saveTransactionHistory();
 
-    private void DecimalMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_DecimalMouseReleased
-        // TODO add your handling code here:
-        Decimal.setBackground(new Color(81,67,95));
-    }//GEN-LAST:event_DecimalMouseReleased
+                                AmountHolder.setText("");
+                                JOptionPane.showMessageDialog(null, "Withdrawal Successful");
+                                break;
+                            }
+                        } else {
+                            JOptionPane.showMessageDialog(null, "Insufficient balance");
+                            break;
+                        }
+                    }
+                }
+            }
+            reader.close();
+        } catch (FileNotFoundException ex) {
+            System.out.println("File not found: " + ex.getMessage());
+            return;
+        } catch (IOException ex) {
+            System.out.println("Error reading file: " + ex.getMessage());
+            return;
+        } catch (ParseException ex) {
+            System.out.println("Error parsing file: " + ex.getMessage());
+            return;
+        }
 
-    private void ZeroMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_ZeroMouseReleased
-        // TODO add your handling code here:
-        Zero.setBackground(new Color(81,67,95));
-    }//GEN-LAST:event_ZeroMouseReleased
+        if (!isAccountIDFound) {
+            System.out.println("Account ID Doesn't match");
+        }
+    }//GEN-LAST:event_AcceptMouseClicked
 
     private void DoubleZeroMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_DoubleZeroMouseReleased
         // TODO add your handling code here:
         DoubleZero.setBackground(new Color(81,67,95));
     }//GEN-LAST:event_DoubleZeroMouseReleased
 
-    private void CancelMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_CancelMouseReleased
+    private void DoubleZeroMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_DoubleZeroMousePressed
         // TODO add your handling code here:
-        Cancel.setBackground(new Color(255,51,51));
-    }//GEN-LAST:event_CancelMouseReleased
+        DoubleZero.setBackground(new Color(57,47,66));
+    }//GEN-LAST:event_DoubleZeroMousePressed
+
+    private void DoubleZeroMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_DoubleZeroMouseClicked
+        // TODO add your handling code here:
+        StringBuilder sb = new StringBuilder(AmountHolder.getText());
+        sb.append("00");
+        AmountHolder.setText(sb.toString());
+    }//GEN-LAST:event_DoubleZeroMouseClicked
 
     private void ClearMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_ClearMouseReleased
         // TODO add your handling code here:]
         Clear.setBackground(new Color(255,153,0));
     }//GEN-LAST:event_ClearMouseReleased
 
-    private void AcceptMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_AcceptMouseReleased
+    private void ClearMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_ClearMousePressed
         // TODO add your handling code here:
-        Accept.setBackground(new Color(0,204,51));
-    }//GEN-LAST:event_AcceptMouseReleased
+        Clear.setBackground(Color.DARK_GRAY);
+    }//GEN-LAST:event_ClearMousePressed
 
-    private void OneMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_OneMouseClicked
+    private void ClearMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_ClearMouseClicked
         // TODO add your handling code here:
-        StringBuilder sb = new StringBuilder(TextHolder.getText());
-        sb.append("1");
-        TextHolder.setText(sb.toString());
-    }//GEN-LAST:event_OneMouseClicked
+        AmountHolder.setText("");
+    }//GEN-LAST:event_ClearMouseClicked
 
-    private void TwoMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_TwoMouseClicked
+    private void ZeroMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_ZeroMouseReleased
         // TODO add your handling code here:
-        StringBuilder sb = new StringBuilder(TextHolder.getText());
-        sb.append("2");
-        TextHolder.setText(sb.toString());
-    }//GEN-LAST:event_TwoMouseClicked
+        Zero.setBackground(new Color(81,67,95));
+    }//GEN-LAST:event_ZeroMouseReleased
 
-    private void ThreeMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_ThreeMouseClicked
+    private void ZeroMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_ZeroMousePressed
         // TODO add your handling code here:
-        StringBuilder sb = new StringBuilder(TextHolder.getText());
-        sb.append("3");
-        TextHolder.setText(sb.toString());
-    }//GEN-LAST:event_ThreeMouseClicked
-
-    private void FourMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_FourMouseClicked
-        // TODO add your handling code here:
-        StringBuilder sb = new StringBuilder(TextHolder.getText());
-        sb.append("4");
-        TextHolder.setText(sb.toString());
-    }//GEN-LAST:event_FourMouseClicked
-
-    private void FiveMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_FiveMouseClicked
-        // TODO add your handling code here:
-        StringBuilder sb = new StringBuilder(TextHolder.getText());
-        sb.append("5");
-        TextHolder.setText(sb.toString());
-    }//GEN-LAST:event_FiveMouseClicked
-
-    private void SixMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_SixMouseClicked
-        // TODO add your handling code here:
-        StringBuilder sb = new StringBuilder(TextHolder.getText());
-        sb.append("6");
-        TextHolder.setText(sb.toString());
-    }//GEN-LAST:event_SixMouseClicked
-
-    private void SevenMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_SevenMouseClicked
-        // TODO add your handling code here:
-        StringBuilder sb = new StringBuilder(TextHolder.getText());
-        sb.append("7");
-        TextHolder.setText(sb.toString());
-    }//GEN-LAST:event_SevenMouseClicked
-
-    private void EightMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_EightMouseClicked
-        // TODO add your handling code here:
-        StringBuilder sb = new StringBuilder(TextHolder.getText());
-        sb.append("8");
-        TextHolder.setText(sb.toString());
-    }//GEN-LAST:event_EightMouseClicked
-
-    private void NineMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_NineMouseClicked
-        // TODO add your handling code here:
-        StringBuilder sb = new StringBuilder(TextHolder.getText());
-        sb.append("9");
-        TextHolder.setText(sb.toString());
-    }//GEN-LAST:event_NineMouseClicked
-
-    private void DecimalMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_DecimalMouseClicked
-        // TODO add your handling code here:
-        StringBuilder sb = new StringBuilder(TextHolder.getText());
-        sb.append(".");
-        TextHolder.setText(sb.toString());
-    }//GEN-LAST:event_DecimalMouseClicked
+        Zero.setBackground(new Color(57,47,66));
+    }//GEN-LAST:event_ZeroMousePressed
 
     private void ZeroMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_ZeroMouseClicked
         // TODO add your handling code here:
-        StringBuilder sb = new StringBuilder(TextHolder.getText());
+        StringBuilder sb = new StringBuilder(AmountHolder.getText());
         sb.append("0");
-        TextHolder.setText(sb.toString());
+        AmountHolder.setText(sb.toString());
     }//GEN-LAST:event_ZeroMouseClicked
 
-    private void DoubleZeroMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_DoubleZeroMouseClicked
+    private void DecimalMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_DecimalMouseReleased
         // TODO add your handling code here:
-        StringBuilder sb = new StringBuilder(TextHolder.getText());
-        sb.append("00");
-        TextHolder.setText(sb.toString());
-    }//GEN-LAST:event_DoubleZeroMouseClicked
+        Decimal.setBackground(new Color(81,67,95));
+    }//GEN-LAST:event_DecimalMouseReleased
+
+    private void DecimalMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_DecimalMousePressed
+        // TODO add your handling code here:
+        Decimal.setBackground(new Color(57,47,66));
+    }//GEN-LAST:event_DecimalMousePressed
+
+    private void DecimalMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_DecimalMouseClicked
+        // TODO add your handling code here:
+        StringBuilder sb = new StringBuilder(AmountHolder.getText());
+        sb.append(".");
+        AmountHolder.setText(sb.toString());
+    }//GEN-LAST:event_DecimalMouseClicked
+
+    private void NineMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_NineMouseReleased
+        // TODO add your handling code here:
+        Nine.setBackground(new Color(81,67,95));
+    }//GEN-LAST:event_NineMouseReleased
+
+    private void NineMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_NineMousePressed
+        // TODO add your handling code here:
+        Nine.setBackground(new Color(57,47,66));
+    }//GEN-LAST:event_NineMousePressed
+
+    private void NineMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_NineMouseClicked
+        // TODO add your handling code here:
+        StringBuilder sb = new StringBuilder(AmountHolder.getText());
+        sb.append("9");
+        AmountHolder.setText(sb.toString());
+    }//GEN-LAST:event_NineMouseClicked
+
+    private void EightMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_EightMouseReleased
+        // TODO add your handling code here:
+        Eight.setBackground(new Color(81,67,95));
+    }//GEN-LAST:event_EightMouseReleased
+
+    private void EightMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_EightMousePressed
+        // TODO add your handling code here:
+        Eight.setBackground(new Color(57,47,66));
+    }//GEN-LAST:event_EightMousePressed
+
+    private void EightMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_EightMouseClicked
+        // TODO add your handling code here:
+        StringBuilder sb = new StringBuilder(AmountHolder.getText());
+        sb.append("8");
+        AmountHolder.setText(sb.toString());
+    }//GEN-LAST:event_EightMouseClicked
+
+    private void SevenMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_SevenMouseReleased
+        // TODO add your handling code here:
+        Seven.setBackground(new Color(81,67,95));
+    }//GEN-LAST:event_SevenMouseReleased
+
+    private void SevenMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_SevenMousePressed
+        // TODO add your handling code here:
+        Seven.setBackground(new Color(57,47,66));
+    }//GEN-LAST:event_SevenMousePressed
+
+    private void SevenMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_SevenMouseClicked
+        // TODO add your handling code here:
+        StringBuilder sb = new StringBuilder(AmountHolder.getText());
+        sb.append("7");
+        AmountHolder.setText(sb.toString());
+    }//GEN-LAST:event_SevenMouseClicked
+
+    private void ThreeMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_ThreeMouseReleased
+        // TODO add your handling code here:
+        Three.setBackground(new Color(81,67,95));
+    }//GEN-LAST:event_ThreeMouseReleased
+
+    private void ThreeMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_ThreeMousePressed
+        // TODO add your handling code here:
+        Three.setBackground(new Color(57,47,66));
+    }//GEN-LAST:event_ThreeMousePressed
+
+    private void ThreeMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_ThreeMouseClicked
+        // TODO add your handling code here:
+        StringBuilder sb = new StringBuilder(AmountHolder.getText());
+        sb.append("3");
+        AmountHolder.setText(sb.toString());
+    }//GEN-LAST:event_ThreeMouseClicked
+
+    private void TwoMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_TwoMouseReleased
+        // TODO add your handling code here:
+        Two.setBackground(new Color(81,67,95));
+    }//GEN-LAST:event_TwoMouseReleased
+
+    private void TwoMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_TwoMousePressed
+        // TODO add your handling code here:
+        Two.setBackground(new Color(57,47,66));
+    }//GEN-LAST:event_TwoMousePressed
+
+    private void TwoMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_TwoMouseClicked
+        // TODO add your handling code here:
+        StringBuilder sb = new StringBuilder(AmountHolder.getText());
+        sb.append("2");
+        AmountHolder.setText(sb.toString());
+    }//GEN-LAST:event_TwoMouseClicked
+
+    private void CancelMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_CancelMouseReleased
+        // TODO add your handling code here:
+        Cancel.setBackground(new Color(255,51,51));
+    }//GEN-LAST:event_CancelMouseReleased
+
+    private void CancelMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_CancelMousePressed
+        // TODO add your handling code here:
+        Cancel.setBackground(Color.DARK_GRAY);
+    }//GEN-LAST:event_CancelMousePressed
 
     private void CancelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_CancelMouseClicked
         // TODO add your handling code here:
     }//GEN-LAST:event_CancelMouseClicked
 
-    private void ClearMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_ClearMouseClicked
+    private void SixMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_SixMouseReleased
         // TODO add your handling code here:
-        TextHolder.setText("");
-    }//GEN-LAST:event_ClearMouseClicked
+        Six.setBackground(new Color(81,67,95));
+    }//GEN-LAST:event_SixMouseReleased
 
-    private void AcceptMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_AcceptMouseClicked
+    private void SixMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_SixMousePressed
         // TODO add your handling code here:
-    }//GEN-LAST:event_AcceptMouseClicked
+        Six.setBackground(new Color(57,47,66));
+    }//GEN-LAST:event_SixMousePressed
+
+    private void SixMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_SixMouseClicked
+        // TODO add your handling code here:
+        StringBuilder sb = new StringBuilder(AmountHolder.getText());
+        sb.append("6");
+        AmountHolder.setText(sb.toString());
+    }//GEN-LAST:event_SixMouseClicked
+
+    private void FiveMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_FiveMouseReleased
+        // TODO add your handling code here:
+        Five.setBackground(new Color(81,67,95));
+    }//GEN-LAST:event_FiveMouseReleased
+
+    private void FiveMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_FiveMousePressed
+        // TODO add your handling code here:
+        Five.setBackground(new Color(57,47,66));
+    }//GEN-LAST:event_FiveMousePressed
+
+    private void FiveMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_FiveMouseClicked
+        // TODO add your handling code here:
+        StringBuilder sb = new StringBuilder(AmountHolder.getText());
+        sb.append("5");
+        AmountHolder.setText(sb.toString());
+    }//GEN-LAST:event_FiveMouseClicked
+
+    private void FourMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_FourMouseReleased
+        // TODO add your handling code here:
+        Four.setBackground(new Color(81,67,95));
+    }//GEN-LAST:event_FourMouseReleased
+
+    private void FourMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_FourMousePressed
+        // TODO add your handling code here:
+        Four.setBackground(new Color(57,47,66));
+    }//GEN-LAST:event_FourMousePressed
+
+    private void FourMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_FourMouseClicked
+        // TODO add your handling code here:
+        StringBuilder sb = new StringBuilder(AmountHolder.getText());
+        sb.append("4");
+        AmountHolder.setText(sb.toString());
+    }//GEN-LAST:event_FourMouseClicked
+
+    private void OneMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_OneMouseReleased
+        // TODO add your handling code here:
+        One.setBackground(new Color(81,67,95));
+    }//GEN-LAST:event_OneMouseReleased
+
+    private void OneMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_OneMousePressed
+        // TODO add your handling code here:
+        One.setBackground(new Color(57,47,66));
+    }//GEN-LAST:event_OneMousePressed
+
+    private void OneMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_OneMouseClicked
+        // TODO add your handling code here:
+        StringBuilder sb = new StringBuilder(AmountHolder.getText());
+        sb.append("1");
+        AmountHolder.setText(sb.toString());
+    }//GEN-LAST:event_OneMouseClicked
 
     /**
      * @param args the command line arguments
@@ -999,9 +1115,50 @@ public class CashWithdrawal extends javax.swing.JFrame {
             }
         });
     }
+    public void save() throws IOException{
+         try (FileWriter file = new FileWriter(filepath2)) {
+             file.write(record2.toJSONString());
+             file.flush();
+         }
+    }
+    public void save2() throws IOException{
+         try (FileWriter file = new FileWriter(filepath)) {
+             file.write(record.toJSONString());
+             file.flush();
+         }
+    }
+    private void readTransactionHistory() {
+        FileReader reader;
+        try {
+            reader = new FileReader(filepath3);
+            if (reader.ready()) {
+                record3 = (JSONObject) Parser3.parse(reader);
+                history = (JSONArray) record3.get("Transaction History");
+            } else {
+               
+                record3 = new JSONObject();
+                history = new JSONArray();
+            }
+            reader.close();
+        } catch (FileNotFoundException ex) {
+            record3 = new JSONObject();
+            history = new JSONArray();
+        } catch (IOException | ParseException ex) {
+            
+        }
+    }
 
+    private void saveTransactionHistory() {
+        record3.put("Transaction History", history);
+        try (FileWriter writer = new FileWriter(filepath3)) {
+            writer.write(record3.toJSONString());
+        } catch (IOException ex) {
+            // Handle the exception here
+        }
+    }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel Accept;
+    private javax.swing.JTextField AmountHolder;
     private javax.swing.JPanel Cancel;
     private javax.swing.JPanel Clear;
     private javax.swing.JPanel Decimal;
@@ -1011,9 +1168,9 @@ public class CashWithdrawal extends javax.swing.JFrame {
     private javax.swing.JPanel Four;
     private javax.swing.JPanel Nine;
     private javax.swing.JPanel One;
+    private javax.swing.JLabel SearchID;
     private javax.swing.JPanel Seven;
     private javax.swing.JPanel Six;
-    private javax.swing.JTextField TextHolder;
     private javax.swing.JPanel Three;
     private javax.swing.JPanel Two;
     private javax.swing.JPanel Zero;
@@ -1034,7 +1191,6 @@ public class CashWithdrawal extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
-    private javax.swing.JPanel jPanel17;
     private javax.swing.JPanel jPanel2;
     // End of variables declaration//GEN-END:variables
 }

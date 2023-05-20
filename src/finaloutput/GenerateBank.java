@@ -9,6 +9,8 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -33,9 +35,15 @@ public class GenerateBank extends javax.swing.JFrame {
     static JSONArray users2 = new JSONArray();
     static JSONObject account2 = new JSONObject();
     
+    private static final String filepath3 = "src\\finaloutput\\History.json";
+    private static JSONParser Parser3 = new JSONParser();
+    static JSONObject record3 = new JSONObject();
+    static JSONArray history = new JSONArray();
+    static JSONObject transact = new JSONObject();
+    
     public GenerateBank() {
         initComponents();
-        //course = (String) CourseComboBOX.getSelectedItem();
+        
     }
 
     /**
@@ -89,6 +97,9 @@ public class GenerateBank extends javax.swing.JFrame {
         jPanel15 = new javax.swing.JPanel();
         TypeCB = new javax.swing.JComboBox<>();
         jLabel14 = new javax.swing.JLabel();
+        jPanel14 = new javax.swing.JPanel();
+        MiddleNameTF = new javax.swing.JTextField();
+        jLabel15 = new javax.swing.JLabel();
 
         jRadioButton1.setText("jRadioButton1");
 
@@ -115,12 +126,12 @@ public class GenerateBank extends javax.swing.JFrame {
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel3Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(FirstNameTF)
+                .addComponent(FirstNameTF, javax.swing.GroupLayout.DEFAULT_SIZE, 178, Short.MAX_VALUE)
                 .addContainerGap())
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(FirstNameTF, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 45, Short.MAX_VALUE)
+            .addComponent(FirstNameTF, javax.swing.GroupLayout.Alignment.TRAILING)
         );
 
         jLabel2.setForeground(new java.awt.Color(153, 153, 153));
@@ -147,7 +158,7 @@ public class GenerateBank extends javax.swing.JFrame {
         );
         jPanel4Layout.setVerticalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(LastNameTF, javax.swing.GroupLayout.DEFAULT_SIZE, 45, Short.MAX_VALUE)
+            .addComponent(LastNameTF)
         );
 
         jLabel4.setBackground(new java.awt.Color(153, 153, 153));
@@ -424,29 +435,63 @@ public class GenerateBank extends javax.swing.JFrame {
         jLabel14.setForeground(new java.awt.Color(153, 153, 153));
         jLabel14.setText("Account Type");
 
+        jPanel14.setBackground(new java.awt.Color(53, 45, 60));
+
+        MiddleNameTF.setBackground(new java.awt.Color(53, 45, 60));
+        MiddleNameTF.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        MiddleNameTF.setForeground(new java.awt.Color(255, 255, 255));
+        MiddleNameTF.setBorder(null);
+
+        javax.swing.GroupLayout jPanel14Layout = new javax.swing.GroupLayout(jPanel14);
+        jPanel14.setLayout(jPanel14Layout);
+        jPanel14Layout.setHorizontalGroup(
+            jPanel14Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel14Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(MiddleNameTF, javax.swing.GroupLayout.DEFAULT_SIZE, 100, Short.MAX_VALUE)
+                .addContainerGap())
+        );
+        jPanel14Layout.setVerticalGroup(
+            jPanel14Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(MiddleNameTF, javax.swing.GroupLayout.DEFAULT_SIZE, 45, Short.MAX_VALUE)
+        );
+
+        jLabel15.setForeground(new java.awt.Color(153, 153, 153));
+        jLabel15.setText("Middle Name");
+
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                    .addComponent(jPanel13, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jLabel2, javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel4, javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel5, javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jPanel6, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jPanel5, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jPanel3, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel2Layout.createSequentialGroup()
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jPanel8, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(18, 18, 18)
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jPanel15, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel14))))
-                .addGap(50, 50, 50)
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jLabel4, javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel2, javax.swing.GroupLayout.Alignment.LEADING))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED))
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                            .addComponent(jPanel13, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jLabel5, javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jPanel6, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jPanel5, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel2Layout.createSequentialGroup()
+                                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jPanel8, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(18, 18, 18)
+                                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jPanel15, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jLabel14)))
+                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel2Layout.createSequentialGroup()
+                                .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel15)
+                                    .addComponent(jPanel14, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                        .addGap(50, 50, 50)))
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jPanel7, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -479,11 +524,14 @@ public class GenerateBank extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(jLabel2)
-                    .addComponent(jLabel3))
+                    .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jLabel3)
+                        .addComponent(jLabel15)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jPanel14, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel4)
@@ -525,7 +573,7 @@ public class GenerateBank extends javax.swing.JFrame {
                             .addComponent(CreateButton, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jPanel13, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addComponent(jPanel15, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(12, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
@@ -535,20 +583,18 @@ public class GenerateBank extends javax.swing.JFrame {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(jLabel1)
-                        .addGap(0, 0, Short.MAX_VALUE))
-                    .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addContainerGap()
                 .addComponent(jLabel1)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addContainerGap())
+                .addGap(12, 12, 12)
+                .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -567,7 +613,7 @@ public class GenerateBank extends javax.swing.JFrame {
 
     private void CreateButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_CreateButtonMouseClicked
         // TODO add your handling code here:
-        int userNumber = 1; // Initialize userNumber as an integer
+        int userNumber = 1; 
         int counter = 1;
         
         int ID = 66990011;
@@ -582,9 +628,10 @@ public class GenerateBank extends javax.swing.JFrame {
         String ZipCode = ZipTF.getText();
         String City = CityTF.getText();
         String Age = AgeTF.getText();
+        String MName = MiddleNameTF.getText();
         
         if (FName.isEmpty() || LName.isEmpty() || ContactNum.isEmpty() || Email.isEmpty() || Address.isEmpty() || Province.isEmpty() ||
-            ZipCode.isEmpty() || City.isEmpty()) {
+            ZipCode.isEmpty() || City.isEmpty() || MName.isEmpty()) {
             JOptionPane.showMessageDialog(null, "Please fill in all the fields.");
             return; 
         }
@@ -675,30 +722,48 @@ public class GenerateBank extends javax.swing.JFrame {
                 if(FirstNameExists && LastNameExists){
                    JOptionPane.showMessageDialog(null, "You already created a maximum number of accounts");
                 } else {
-                    counter++;
-                    account2.put("Number",String.valueOf(userNumber));
-                    account2.put("First Name",FName);
-                    account2.put("Last Name",LName);
-                    account2.put("Contact Number", ContactNum);
-                    account2.put("Email", Email);
-                    account2.put("Province", Province);
-                    account2.put("Zip Code", ZipCode);
-                    account2.put("City", City);
-                    account2.put("Account Type", AccType);
-                    account2.put("Age", Age);
-                    account2.put("Gender", Gender);
-                    account2.put("Address", Address);
-                    account2.put("Balance", initialDepositAmount);
-                    account2.put("Pin Number", PinNum);
-                    account2.put("Account ID",AccountID);
-                    account2.put("Status",Status);
-                    users2.add(account2);
-                    record2.put("Bank Account List", users2);
-                    save();
-                    clear();
-                    JOptionPane.showMessageDialog(null, "Account Created Successfully!\nAccount ID: #"
-                            + AccountID + "\nDefault PIN: " 
-                            + PinNum, "Information", JOptionPane.INFORMATION_MESSAGE);
+                    
+                    int choice = JOptionPane.showConfirmDialog(null, "Are you sure you want to proceed with the transcation?", "Confirmation", JOptionPane.YES_NO_OPTION);
+                    if (choice == JOptionPane.YES_OPTION) {
+                        counter++;
+                        account2.put("Number",String.valueOf(userNumber));
+                        account2.put("First Name",FName);
+                        account2.put("Last Name",LName);
+                        account2.put("Contact Number", ContactNum);
+                        account2.put("Email", Email);
+                        account2.put("Province", Province);
+                        account2.put("Zip Code", ZipCode);
+                        account2.put("City", City);
+                        account2.put("Account Type", AccType);
+                        account2.put("Age", Age);
+                        account2.put("Gender", Gender);
+                        account2.put("Address", Address);
+                        account2.put("Balance", String.valueOf(initialDepositAmount));
+                        account2.put("Pin Number", PinNum);
+                        account2.put("Account ID",AccountID);
+                        account2.put("Status",Status);
+                        account2.put("Middle Name", MName);
+                        users2.add(account2);
+                        record2.put("Bank Account List", users2);
+                        save();
+                        clear();
+                        
+                        // HISTORY
+                        readTransactionHistory(); 
+                        transact.put("Account ID", AccountID);
+                        transact.put("Transaction Type", "Initial Deposit");
+                        transact.put("Transaction Amount", String.valueOf(initialDepositAmount));
+                        transact.put("Updated Balance", String.valueOf(initialDepositAmount));
+                        LocalDateTime dateTime = LocalDateTime.now();
+                        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+                        transact.put("Transaction Date", dateTime.format(formatter));
+                        history.add(transact);
+                        saveTransactionHistory();
+                        
+                        JOptionPane.showMessageDialog(null, "Account Created Successfully!\nAccount ID: #"
+                                + AccountID + "\nDefault PIN: " 
+                                + PinNum, "Information", JOptionPane.INFORMATION_MESSAGE);
+                    }
                 }
             } catch (IOException | ParseException ex) {
                 Logger.getLogger(GenerateBank.class.getName()).log(Level.SEVERE, null, ex);
@@ -752,6 +817,7 @@ public class GenerateBank extends javax.swing.JFrame {
      public void save() throws IOException{
          try (FileWriter file = new FileWriter(filepath2)) {
              file.write(record2.toJSONString());
+             file.flush();
          }
     }
     public void filecheck() throws FileNotFoundException, IOException, ParseException{
@@ -786,6 +852,35 @@ public class GenerateBank extends javax.swing.JFrame {
         TypeCB.setSelectedIndex(0);
         GenderCB.setSelectedIndex(0);
     }
+    private void readTransactionHistory() {
+        FileReader reader;
+        try {
+            reader = new FileReader(filepath3);
+            if (reader.ready()) {
+                record3 = (JSONObject) Parser3.parse(reader);
+                history = (JSONArray) record3.get("Transaction History");
+            } else {
+               
+                record3 = new JSONObject();
+                history = new JSONArray();
+            }
+            reader.close();
+        } catch (FileNotFoundException ex) {
+            record3 = new JSONObject();
+            history = new JSONArray();
+        } catch (IOException | ParseException ex) {
+            
+        }
+    }
+
+    private void saveTransactionHistory() {
+        record3.put("Transaction History", history);
+        try (FileWriter writer = new FileWriter(filepath3)) {
+            writer.write(record3.toJSONString());
+        } catch (IOException ex) {
+            // Handle the exception here
+        }
+    }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTextField AddressTF;
     private javax.swing.JTextField AgeTF;
@@ -797,6 +892,7 @@ public class GenerateBank extends javax.swing.JFrame {
     private javax.swing.JComboBox<String> GenderCB;
     private javax.swing.JTextField InitialDTF;
     private javax.swing.JTextField LastNameTF;
+    private javax.swing.JTextField MiddleNameTF;
     private javax.swing.JTextField StateTF;
     private javax.swing.JComboBox<String> TypeCB;
     private javax.swing.JTextField ZipTF;
@@ -806,6 +902,7 @@ public class GenerateBank extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel13;
     private javax.swing.JLabel jLabel14;
+    private javax.swing.JLabel jLabel15;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
@@ -819,6 +916,7 @@ public class GenerateBank extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel11;
     private javax.swing.JPanel jPanel12;
     private javax.swing.JPanel jPanel13;
+    private javax.swing.JPanel jPanel14;
     private javax.swing.JPanel jPanel15;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;

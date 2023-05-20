@@ -5,12 +5,14 @@
 package finaloutput;
 
 import java.awt.Color;
+import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.Timer;
@@ -32,9 +34,9 @@ public class Main extends javax.swing.JFrame {
     private static final JSONParser Parser = new JSONParser();
     static JSONObject record = new JSONObject();
     static JSONArray users = new JSONArray();
-    private static final int ANIMATION_DELAY = 50;
+    private static final int ANIMATION_DELAY = 20;
     private static final Color ORIGINAL_COLOR = new Color(204, 204, 255);
-    
+
     public Main() {
         setUndecorated(true);
         initComponents();
@@ -45,7 +47,12 @@ public class Main extends javax.swing.JFrame {
             PassTF.setEchoChar((char) 0);
             PassTF.setForeground(Color.GRAY);
         }
-       // applyColorPulseAnimation(jPanel1);
+        if (UserTF.getText().isEmpty()) {
+            UserTF.setText("Username");
+            UserTF.setForeground(Color.GRAY);
+        }
+        applyColorPulseAnimation(jPanel5);
+        mainLOGO();
     }
 
     /**
@@ -58,6 +65,9 @@ public class Main extends javax.swing.JFrame {
     private void initComponents() {
 
         jPanel1 = new javax.swing.JPanel();
+        jPanel6 = new javax.swing.JPanel();
+        ExitButton = new javax.swing.JLabel();
+        jPanel5 = new javax.swing.JPanel();
         jPanel2 = new javax.swing.JPanel();
         jPanel3 = new javax.swing.JPanel();
         UserTF = new javax.swing.JTextField();
@@ -69,15 +79,48 @@ public class Main extends javax.swing.JFrame {
         jLabel1 = new javax.swing.JLabel();
         EmployeeChecker = new javax.swing.JRadioButton();
         SignupButton = new javax.swing.JLabel();
-        jLabel3 = new javax.swing.JLabel();
-        jPanel6 = new javax.swing.JPanel();
+        Logo = new javax.swing.JLabel();
+        jTextField1 = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         jPanel1.setBackground(new java.awt.Color(204, 204, 255));
 
+        jPanel6.setBackground(new java.awt.Color(53, 45, 60));
+
+        ExitButton.setFont(new java.awt.Font("Yu Gothic UI", 1, 18)); // NOI18N
+        ExitButton.setForeground(new java.awt.Color(255, 255, 255));
+        ExitButton.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        ExitButton.setText("X");
+        ExitButton.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                ExitButtonMouseClicked(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                ExitButtonMouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                ExitButtonMouseExited(evt);
+            }
+        });
+
+        javax.swing.GroupLayout jPanel6Layout = new javax.swing.GroupLayout(jPanel6);
+        jPanel6.setLayout(jPanel6Layout);
+        jPanel6Layout.setHorizontalGroup(
+            jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel6Layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(ExitButton)
+                .addContainerGap())
+        );
+        jPanel6Layout.setVerticalGroup(
+            jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(ExitButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+        );
+
+        jPanel5.setBackground(new java.awt.Color(53, 45, 60));
+
         jPanel2.setBackground(new java.awt.Color(24, 21, 27));
-        jPanel2.setBorder(javax.swing.BorderFactory.createEtchedBorder());
 
         jPanel3.setBackground(new java.awt.Color(57, 49, 64));
 
@@ -212,9 +255,12 @@ public class Main extends javax.swing.JFrame {
             }
         });
 
-        jLabel3.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel3.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel3.setText("Logo Here");
+        Logo.setForeground(new java.awt.Color(255, 255, 255));
+        Logo.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+
+        jTextField1.setEditable(false);
+        jTextField1.setBackground(new java.awt.Color(24, 21, 27));
+        jTextField1.setBorder(null);
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -228,19 +274,22 @@ public class Main extends javax.swing.JFrame {
                     .addComponent(SigninButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addComponent(EmployeeChecker)
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(EmployeeChecker)
+                            .addGroup(jPanel2Layout.createSequentialGroup()
+                                .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 11, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(91, 91, 91)
+                                .addComponent(Logo, javax.swing.GroupLayout.PREFERRED_SIZE, 109, javax.swing.GroupLayout.PREFERRED_SIZE)))
                         .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
-            .addGroup(jPanel2Layout.createSequentialGroup()
-                .addGap(64, 64, 64)
-                .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 190, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 81, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(Logo, javax.swing.GroupLayout.PREFERRED_SIZE, 81, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -254,17 +303,21 @@ public class Main extends javax.swing.JFrame {
                 .addContainerGap())
         );
 
-        jPanel6.setBackground(new java.awt.Color(53, 45, 60));
-
-        javax.swing.GroupLayout jPanel6Layout = new javax.swing.GroupLayout(jPanel6);
-        jPanel6.setLayout(jPanel6Layout);
-        jPanel6Layout.setHorizontalGroup(
-            jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
+        javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
+        jPanel5.setLayout(jPanel5Layout);
+        jPanel5Layout.setHorizontalGroup(
+            jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel5Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
-        jPanel6Layout.setVerticalGroup(
-            jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 25, Short.MAX_VALUE)
+        jPanel5Layout.setVerticalGroup(
+            jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel5Layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
         );
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
@@ -272,18 +325,18 @@ public class Main extends javax.swing.JFrame {
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jPanel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(290, 290, 290)
-                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(286, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                .addGap(283, 283, 283)
+                .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(285, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addComponent(jPanel6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(27, 27, 27)
-                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(99, Short.MAX_VALUE))
+                .addGap(18, 18, 18)
+                .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(100, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -309,7 +362,7 @@ public class Main extends javax.swing.JFrame {
 
     private void SignupButtonMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_SignupButtonMouseEntered
         // TODO add your handling code here:
-        SignupButton.setForeground(new Color(155,140,169));
+        SignupButton.setForeground(new Color(155, 140, 169));
     }//GEN-LAST:event_SignupButtonMouseEntered
 
     private void SignupButtonMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_SignupButtonMouseExited
@@ -395,6 +448,27 @@ public class Main extends javax.swing.JFrame {
         SigninButton.setBackground(new Color(153, 153, 255));
     }//GEN-LAST:event_SigninButtonMouseReleased
 
+    private void ExitButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_ExitButtonMouseClicked
+        // TODO add your handling code here:
+        int confirmed = JOptionPane.showConfirmDialog(null,
+                "Are you sure you want to exit the application?", "Confirm Exit",
+                JOptionPane.YES_NO_OPTION);
+
+        if (confirmed == JOptionPane.YES_OPTION) {
+            System.exit(0);
+        }
+    }//GEN-LAST:event_ExitButtonMouseClicked
+
+    private void ExitButtonMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_ExitButtonMouseEntered
+        // TODO add your handling code here:
+        ExitButton.setForeground(Color.RED);
+    }//GEN-LAST:event_ExitButtonMouseEntered
+
+    private void ExitButtonMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_ExitButtonMouseExited
+        // TODO add your handling code here:
+        ExitButton.setForeground(Color.WHITE);
+    }//GEN-LAST:event_ExitButtonMouseExited
+
     /**
      * @param args the command line arguments
      */
@@ -429,6 +503,7 @@ public class Main extends javax.swing.JFrame {
             }
         });
     }
+
     public void UserLogin() throws ParseException {
         try {
             String Username = UserTF.getText();
@@ -443,21 +518,22 @@ public class Main extends javax.swing.JFrame {
                 if (reader.ready()) {
                     record = (JSONObject) Parser.parse(reader);
                     users = (JSONArray) record.get("Account List");
-                    
+
                     boolean userFound = false;
-                    
+
                     for (int i = 0; i < users.size(); i++) {
                         JSONObject user = (JSONObject) users.get(i);
-                        
-                        String UsernameChecker = (String) user.get("Username");
-                        String Passchecker = (String) user.get("Password");
-                        
+
+                        String UsernameChecker = (String) user.get("APP: Username");
+                        String Passchecker = (String) user.get("APP: Password");
+
                         if (Username.equals(UsernameChecker)) {
                             userFound = true;
                             if (Password.equals(Passchecker)) {
                                 JOptionPane.showMessageDialog(this, "LOGIN SUCCESSFUL", "Message", JOptionPane.INFORMATION_MESSAGE);
-                                UserDashboard frame = new UserDashboard();
+                                UserDashboard frame = new UserDashboard(UserTF.getText());
                                 frame.setVisible(true);
+
                                 dispose();
                             } else {
                                 JOptionPane.showMessageDialog(this, "ERROR! INVALID PASSWORD!", "Error", JOptionPane.ERROR_MESSAGE);
@@ -468,13 +544,14 @@ public class Main extends javax.swing.JFrame {
                         JOptionPane.showMessageDialog(this, "ERROR! NO MATCHING USERNAME FOUND!", "Error", JOptionPane.ERROR_MESSAGE);
                     }
                 } else {
-                    JOptionPane.showMessageDialog(this, "ERROR! NO NO FILE FOUND!", "Error", JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(this, "ERROR! NO FILE FOUND!", "Error", JOptionPane.ERROR_MESSAGE);
                 }
             }
         } catch (IOException ex) {
             Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
+
     private static void applyColorPulseAnimation(JPanel panel) {
         Timer timer = new Timer(ANIMATION_DELAY, new ActionListener() {
             private final float[] hsbValues = Color.RGBtoHSB(ORIGINAL_COLOR.getRed(), ORIGINAL_COLOR.getGreen(), ORIGINAL_COLOR.getBlue(), null);
@@ -506,20 +583,29 @@ public class Main extends javax.swing.JFrame {
         timer.start();
     }
 
+    public final void mainLOGO() {
+        ImageIcon icon = new ImageIcon("src\\icons\\2.png");
+        Image scaledImage = icon.getImage().getScaledInstance(Logo.getWidth(), Logo.getHeight(), Image.SCALE_SMOOTH);
+        ImageIcon scaledIcon = new ImageIcon(scaledImage);
+        Logo.setIcon(scaledIcon);
+    }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JRadioButton EmployeeChecker;
+    private javax.swing.JLabel ExitButton;
+    private javax.swing.JLabel Logo;
     private javax.swing.JPasswordField PassTF;
     private javax.swing.JPanel SigninButton;
     private javax.swing.JLabel SignupButton;
     private javax.swing.JTextField UserTF;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
+    private javax.swing.JPanel jPanel5;
     private javax.swing.JPanel jPanel6;
+    private javax.swing.JTextField jTextField1;
     // End of variables declaration//GEN-END:variables
 }

@@ -4,6 +4,15 @@
  */
 package finaloutput;
 
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
+import javax.swing.table.DefaultTableModel;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
+
 /**
  *
  * @author adzyl
@@ -13,9 +22,21 @@ public class TransactionHistory extends javax.swing.JFrame {
     /**
      * Creates new form TransactionHistory
      */
+    private static final String filepath3 = "src\\finaloutput\\History.json";
+    private static JSONParser Parser3 = new JSONParser();
+    static JSONObject record3 = new JSONObject();
+    static JSONArray history = new JSONArray();
+    static JSONObject transact = new JSONObject();
+    
     public TransactionHistory() {
         initComponents();
     }
+    public TransactionHistory(String textValue) {
+        this();
+        jLabel1.setText(textValue);
+        historyTable();
+    }
+
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -26,15 +47,19 @@ public class TransactionHistory extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jLabel1 = new javax.swing.JLabel();
         jPanel1 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
+
+        jLabel1.setText("jLabel1");
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         jPanel1.setBackground(new java.awt.Color(24, 21, 27));
 
         jTable1.setBackground(new java.awt.Color(53, 45, 60));
+        jTable1.setForeground(new java.awt.Color(255, 255, 255));
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
@@ -64,17 +89,11 @@ public class TransactionHistory extends javax.swing.JFrame {
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 690, Short.MAX_VALUE)
-                .addContainerGap())
+            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 702, Short.MAX_VALUE)
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 289, Short.MAX_VALUE)
-                .addContainerGap())
+            .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 299, Short.MAX_VALUE)
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -125,8 +144,45 @@ public class TransactionHistory extends javax.swing.JFrame {
             }
         });
     }
+    public final void historyTable(){
+        String UserID = jLabel1.getText();
+        DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
+        model.setRowCount(0); // clear rows
+        
+        FileReader reader;
+        try {
+            reader = new FileReader(filepath3);
+            if (reader.ready()) {
+                record3 = (JSONObject) Parser3.parse(reader);
+                history = (JSONArray) record3.get("Transaction History");
+                
+                for (int i = 0; i < history.size(); i++) {
+                    JSONObject trans = (JSONObject) history.get(i);
+                    String user = (String) trans.get("Account ID");
+                
+                    if (user.equals(UserID)) { 
+                        String transType = (String) trans.get("Transaction Type");
+                        String transAmount = (String) trans.get("Transaction Amount");
+                        String transDate = (String) trans.get("Transaction Date");
+                        String transBal = (String) trans.get("Updated Balance");
+                        
+                        model.addRow(new Object[]{transDate, transType, "$"+transAmount,"$"+transBal});
+                    }
+                }
+            }
+            reader.close();
+        } catch (FileNotFoundException ex) {
+            System.out.println("File not found: " + ex.getMessage());
+        } catch (IOException ex) {
+            System.out.println("Error reading file: " + ex.getMessage());
+        } catch (ParseException ex) {
+            System.out.println("Error parsing file: " + ex.getMessage());
+        }
+       
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable jTable1;
